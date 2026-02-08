@@ -1,0 +1,47 @@
+{
+  "$schema": "https://computespec.dev/gpu/v1/schema.json",
+  "provider": "aws",
+  "instance": "p5.48xlarge",
+  "gpu": {
+    "model": "nvidia-h100",
+    "variant": "sxm5",
+    "count": 8,
+    "vram_gb": 80,
+    "tflops_fp16": 989.5,
+    "memory_bandwidth_tbps": 3.35,
+    "interconnect": "nvswitch",
+    "architecture": "hopper"
+  },
+  "compute": {
+    "vcpus": 192,
+    "ram_gb": 2048,
+    "storage_gb": 30720,
+    "storage_type": "nvme-ssd",
+    "network_gbps": 3200
+  },
+  "pricing": {
+    "currency": "USD",
+    "billing_unit": "per-hour",
+    "billing_granularity": "per-second",
+    "on_demand": 98.32,
+    "spot": null,
+    "reserved_1yr": 63.91,
+    "reserved_3yr": 42.61
+  },
+  "availability": {
+    "regions": ["us-east-1", "us-west-2", "eu-west-1"],
+    "type": "on-demand",
+    "sla_uptime": 0.999
+  },
+  "normalized": {
+    "cost_per_gpu_hour": 12.29,
+    "cost_per_tflop_hour": 0.01242,
+    "vram_per_dollar": 6.51
+  },
+  "meta": {
+    "last_updated": "2026-02-08T00:00:00Z",
+    "source_url": "https://aws.amazon.com/ec2/instance-types/p5/",
+    "verified": true,
+    "spec_version": "1.0.0"
+  }
+}
