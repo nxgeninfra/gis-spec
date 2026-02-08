@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://computespec.dev/gpu/v1/schema.json",
+  "title": "GPU Instance Specification (GIS)",
+  "description": "A vendor-neutral, machine-readable JSON format for describing any GPU cloud offering.",
+  "type": "object",
+  "required": ["provider", "instance", "gpu", "compute", "pricing", "meta"],
+  "additionalProperties": true,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Reference to the GIS JSON Schema URL."
+    },
+    "provider": {
+      "type": "string",
+      "description": "Provider identifier in kebab-case (e.g., 'aws', 'lambda-labs', 'runpod')."
+    },
+    "instance": {
+      "type": "string",
+      "description": "Provider's instance type identifier (e.g., 'p5.48xlarge', 'gpu_1x_h100_sxm5')."
+    },
+    "gpu": {
+      "type": "object",
+      "description": "GPU hardware specification.",
+      "required": ["model", "count", "vram_gb"],
+      "additionalProperties": true,
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "GPU model in lowercase kebab-case (e.g., 'nvidia-h100', 'nvidia-a100')."
+        },
+        "variant": {
+          "type": ["string", "null"],
+          "description": "GPU variant (e.g., 'sxm5', 'pcie', '80gb')."
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of GPUs in this instance."
+        },
+        "vram_gb": {
+          "type": "number",
+          "minimum": 0,
+          "description": "GPU memory in gigabytes per GPU."
+        },
+        "tflops_fp16": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Peak FP16 TFLOPS per GPU."
+        },
+        "memory_bandwidth_tbps": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "GPU memory bandwidth in TB/s per GPU."
+        },
+        "interconnect": {
+          "type": ["string", "null"],
+          "description": "GPU interconnect type (e.g., 'nvlink', 'pcie', 'nvswitch')."
+        },
+        "architecture": {
+          "type": ["string", "null"],
+          "description": "GPU architecture generation (e.g., 'hopper', 'ampere', 'ada-lovelace')."
+        }
+      }
+    },
+    "compute": {
+      "type": "object",
+      "description": "Compute bundle (CPU, RAM, storage, network).",
+      "required": ["vcpus", "ram_gb"],
+      "additionalProperties": true,
+      "properties": {
+        "vcpus": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of virtual CPUs."
+        },
+        "ram_gb": {
+          "type": "number",
+          "minimum": 0,
+          "description": "System RAM in gigabytes."
+        },
+        "storage_gb": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Local storage in gigabytes."
+        },
+        "storage_type": {
+          "type": ["string", "null"],
+          "description": "Storage type (e.g., 'nvme-ssd', 'ssd', 'hdd')."
+        },
+        "network_gbps": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Network bandwidth in Gbps."
+        }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "description": "Pricing information.",
+      "required": ["currency", "billing_unit"],
+      "additionalProperties": true,
+      "properties": {
+        "currency": {
+          "type": "string",
+          "description": "ISO 4217 currency code (e.g., 'USD', 'EUR')."
+        },
+        "billing_unit": {
+          "type": "string",
+          "enum": ["per-hour", "per-minute", "per-second", "per-month"],
+          "description": "Primary billing unit."
+        },
+        "billing_granularity": {
+          "type": ["string", "null"],
+          "enum": ["per-second", "per-minute", "per-hour", null],
+          "description": "Minimum billing increment."
+        },
+        "on_demand": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "On-demand price per billing_unit."
+        },
+        "spot": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Spot/preemptible price per billing_unit."
+        },
+        "reserved_1yr": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "1-year reserved price per billing_unit."
+        },
+        "reserved_3yr": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "3-year reserved price per billing_unit."
+        }
+      }
+    },
+    "availability": {
+      "type": ["object", "null"],
+      "description": "Availability information.",
+      "additionalProperties": true,
+      "properties": {
+        "regions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Available regions."
+        },
+        "type": {
+          "type": ["string", "null"],
+          "description": "Availability type (e.g., 'on-demand', 'spot', 'reserved')."
+        },
+        "sla_uptime": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "SLA uptime guarantee as a decimal (e.g., 0.999 = 99.9%)."
+        }
+      }
+    },
+    "normalized": {
+      "type": ["object", "null"],
+      "description": "Derived comparison metrics (computed, not provider-reported).",
+      "additionalProperties": true,
+      "properties": {
+        "cost_per_gpu_hour": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Effective cost per GPU per hour (USD)."
+        },
+        "cost_per_tflop_hour": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Cost per FP16 TFLOP per hour (USD)."
+        },
+        "vram_per_dollar": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "GB of VRAM per dollar per hour."
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "description": "Document metadata.",
+      "required": ["last_updated", "spec_version"],
+      "additionalProperties": true,
+      "properties": {
+        "last_updated": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of last data update (e.g., '2026-02-08T00:00:00Z')."
+        },
+        "source_url": {
+          "type": ["string", "null"],
+          "description": "URL of the provider's pricing page."
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "Whether this data has been manually verified.",
+          "default": false
+        },
+        "spec_version": {
+          "type": "string",
+          "description": "GIS spec version this document conforms to (semver)."
+        }
+      }
+    }
+  }
+}
