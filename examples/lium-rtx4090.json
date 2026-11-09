@@ -1,0 +1,49 @@
+{
+  "$schema": "https://computespec.dev/gpu/v1/schema.json",
+  "provider": "lium",
+  "instance": "1x-rtx-4090",
+  "gpu": {
+    "model": "nvidia-rtx-4090",
+    "variant": null,
+    "count": 1,
+    "vram_gb": 24,
+    "tflops_fp16": null,
+    "memory_bandwidth_tbps": null,
+    "interconnect": null,
+    "architecture": "ada"
+  },
+  "compute": {
+    "vcpus": 56,
+    "ram_gb": 63,
+    "storage_gb": 457,
+    "storage_type": "nvme-ssd",
+    "network_gbps": 0.27
+  },
+  "pricing": {
+    "currency": "USD",
+    "billing_unit": "per-hour",
+    "billing_granularity": "per-second",
+    "on_demand": 0.4,
+    "spot": null,
+    "reserved_1yr": null,
+    "reserved_3yr": null
+  },
+  "availability": {
+    "regions": [
+      "ua"
+    ],
+    "type": "on-demand",
+    "sla_uptime": null
+  },
+  "normalized": {
+    "cost_per_gpu_hour": 0.4,
+    "cost_per_tflop_hour": null,
+    "vram_per_dollar": 60.0
+  },
+  "meta": {
+    "last_updated": "2026-11-09T07:19:23Z",
+    "source_url": "https://lium.io/pricing",
+    "verified": true,
+    "spec_version": "1.0.0"
+  }
+}
