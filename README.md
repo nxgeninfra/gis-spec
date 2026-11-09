@@ -184,6 +184,8 @@ vram_per_dollar = gpu.vram_gb / cost_per_gpu_hour
 | [`runpod-a100.json`](./examples/runpod-a100.json) | RunPod | 1× A100 80GB | $1.64 |
 | [`coreweave-h100.json`](./examples/coreweave-h100.json) | CoreWeave | 1× H100 SXM | $2.23 |
 | [`vastai-a100.json`](./examples/vastai-a100.json) | Vast.ai | 1× A100 80GB | $1.10 |
+| [`lium-h100.json`](./examples/lium-h100.json) | Lium | 1× H100 80GB | $2.50 |
+| [`lium-rtx4090.json`](./examples/lium-rtx4090.json) | Lium | 1× RTX 4090 | $0.40 |
 
 ---
 
